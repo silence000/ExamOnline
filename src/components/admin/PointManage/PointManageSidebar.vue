@@ -6,17 +6,13 @@
       @open="handleOpen"
       @close="handleClose"
     >
-      <el-menu-item index="1" @click="switchToComponent('QuestionControl')">
+      <el-menu-item index="1" @click="switchToComponent('PointList')">
         <i class="fa fa-list-ul"></i>
-        <span slot="title"> 试题管理</span>
+        <span slot="title"> 知识点列表</span>
       </el-menu-item>
-      <el-menu-item index="2" @click="switchToComponent('QuestionAdd')">
+      <el-menu-item index="2" @click="switchToComponent('PointAdd')">
         <i class="fa fa-pen-square"></i>
-        <span slot="title"> 添加试题</span>
-      </el-menu-item>
-      <el-menu-item index="3" @click="switchToComponent('QuestionImport')">
-        <i class="fa fa-cloud-upload-alt"></i>
-        <span slot="title"> 导入试题</span>
+        <span slot="title"> 添加知识点</span>
       </el-menu-item>
     </el-menu>
   </el-aside>
@@ -24,10 +20,10 @@
 
 <script>
 export default {
-  name: "QuestionManageSidebar",
+  name: "PointManageSidebar",
   methods: {
     switchToComponent(path) {
-      const location = "/admin/QuestionManage/" + path;
+      const location = "/admin/PointManage/" + path;
       if (this.$route.path !== location) {
         this.$router.push(location);
       }

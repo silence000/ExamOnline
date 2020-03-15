@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <el-col :span="24">
       <div class="title">
-        <h3><i class="fa fa-list-ul"></i> 会员管理</h3>
+        <h3><i class="fa fa-chart-bar"></i> 管理员列表</h3>
       </div>
     </el-col>
     <!-- 选择 -->
@@ -14,11 +14,9 @@
           <el-table-column prop="id" label="ID" width="40"></el-table-column>
           <el-table-column prop="username" label="用户名"> </el-table-column>
           <el-table-column prop="email" label="邮箱"> </el-table-column>
-          <el-table-column prop="provence" label="省份"> </el-table-column>
-          <el-table-column prop="company" label="单位"> </el-table-column>
-          <el-table-column prop="department" label="部门"> </el-table-column>
-          <el-table-column prop="profession" label="专业"> </el-table-column>
-          <el-table-column prop="reg_time" label="注册时间"> </el-table-column>
+          <el-table-column prop="user_group" label="用户组"> </el-table-column>
+          <el-table-column prop="register_time" label="注册时间">
+          </el-table-column>
           <el-table-column prop="status" label="状态"> </el-table-column>
           <el-table-column prop="operate" label="操作"> </el-table-column>
         </el-table>
@@ -40,23 +38,17 @@ export default {
           id: "1",
           username: "Admin",
           email: "silence000@foxmail.com",
-          provence: "辽宁省",
-          company: "兄弟连",
-          department: "兄弟会",
-          profession: "全栈攻城狮",
-          reg_time: "2020.3.15",
+          user_group: "超级管理员",
+          register_time: "2020.3.15",
           status: ["启用", "注销", "其他"],
           operate: ["禁用", "启用"]
         },
         {
-          id: "2",
+          id: "1",
           username: "Admin",
           email: "silence000@foxmail.com",
-          provence: "辽宁省",
-          company: "兄弟连",
-          department: "兄弟会",
-          profession: "全栈攻城狮",
-          reg_time: "2020.3.15",
+          user_group: "超级管理员",
+          register_time: "2020.3.15",
           status: ["启用", "注销", "其他"],
           operate: ["禁用", "启用"]
         }

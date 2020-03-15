@@ -1,10 +1,10 @@
 <template>
   <el-container>
     <el-header class="header" height="auto">
-      <LogoAndNav page-index="4"></LogoAndNav>
+      <LogoAndNav page-index="5"></LogoAndNav>
     </el-header>
     <el-container class="container slide-content">
-      <UserManageSidebar></UserManageSidebar>
+      <PointManageSidebar></PointManageSidebar>
       <el-main>
         <router-view />
       </el-main>
@@ -13,16 +13,16 @@
 </template>
 
 <script>
-import UserManageSidebar from "../../components/admin/UserManage/UserManageSidebar";
+import PointManageSidebar from "../../components/admin/PointManage/PointManageSidebar";
 import LogoAndNav from "../../views/admin/LogoAndNav";
 export default {
   data() {
     return {
-      pageAddress: "4"
+      pageAddress: "5"
     };
   },
   components: {
-    UserManageSidebar,
+    PointManageSidebar,
     LogoAndNav
   }
 };

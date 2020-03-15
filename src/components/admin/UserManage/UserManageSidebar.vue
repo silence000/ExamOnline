@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "ExamManageSidebar",
+  name: "UserManageSidebar",
   methods: {
     switchToComponent(path) {
       const location = "/admin/UserManage/" + path;

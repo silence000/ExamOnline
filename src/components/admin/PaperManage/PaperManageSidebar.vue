@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "ExamManageSidebar",
+  name: "PaperManageSidebar",
   methods: {
     switchToComponent(path) {
       const location = "/admin/PaperManage/" + path;

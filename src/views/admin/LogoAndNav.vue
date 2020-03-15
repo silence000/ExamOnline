@@ -70,6 +70,12 @@ export default {
       if (key === "4") {
         this.switchToComponent("UserManage");
       }
+      if (key === "5") {
+        this.switchToComponent("PointManage");
+      }
+      if (key === "6") {
+        this.switchToComponent("SystemSettings");
+      }
     },
     switchToComponent(path) {
       const location = "/admin/" + path;

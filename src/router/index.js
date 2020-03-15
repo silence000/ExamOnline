@@ -10,6 +10,12 @@ import PaperControl from "../components/admin/PaperManage/PaperControl";
 import PaperModification from "../components/admin/PaperManage/PaperModification";
 import UserAdd from "../components/admin/UserManage/UserAdd";
 import UserControl from "../components/admin/UserManage/UserControl";
+import PointAdd from "../components/admin/PointManage/PointAdd";
+import PointList from "../components/admin/PointManage/PointList";
+import SystemAdminAdd from "../components/admin/SystemSettings/SystemAdminAdd";
+import SystemAdminList from "../components/admin/SystemSettings/SystemAdminList";
+import SystemBackup from "../components/admin/SystemSettings/SystemBackup";
+import SystemExamBank from "../components/admin/SystemSettings/SystemExamBank";
 
 Vue.use(VueRouter);
 
@@ -20,9 +26,11 @@ const routes = [
     component: Home
   },
   {
-    path: "/admin/QuestionManage",
+    // 试题管理
+    path: "/admin/QuestionManage/",
     name: "QuestionManage",
     component: () => import("../views/admin/QuestionManage.vue"),
+    redirect: "/admin/QuestionManage/QuestionControl",
     children: [
       {
         path: "QuestionAdd",
@@ -42,9 +50,11 @@ const routes = [
     ]
   },
   {
+    // 试卷管理
     path: "/admin/PaperManage",
     name: "PaperManage",
     component: () => import("../views/admin/PaperManage.vue"),
+    redirect: "/admin/PaperManage/PaperControl",
     children: [
       {
         path: "PaperAdd",
@@ -64,9 +74,11 @@ const routes = [
     ]
   },
   {
+    // 会员管理
     path: "/admin/UserManage",
     name: "UserManage",
     component: () => import("../views/admin/UserManage.vue"),
+    redirect: "/admin/UserManage/UserControl",
     children: [
       {
         path: "UserAdd",
@@ -77,6 +89,54 @@ const routes = [
         path: "UserControl",
         name: "UserControl",
         component: UserControl
+      }
+    ]
+  },
+  {
+    // 知识点管理
+    path: "/admin/PointManage",
+    name: "PointManage",
+    component: () => import("../views/admin/PointManage.vue"),
+    redirect: "/admin/PointManage/PointList",
+    children: [
+      {
+        path: "PointAdd",
+        name: "PointAdd",
+        component: PointAdd
+      },
+      {
+        path: "PointList",
+        name: "PointList",
+        component: PointList
+      }
+    ]
+  },
+  {
+    // 网站设置
+    path: "/admin/SystemSettings",
+    name: "SystemSettings",
+    component: () => import("../views/admin/SystemSettings.vue"),
+    redirect: "/admin/SystemSettings/SystemBackup",
+    children: [
+      {
+        path: "SystemAdminAdd",
+        name: "SystemAdminAdd",
+        component: SystemAdminAdd
+      },
+      {
+        path: "SystemAdminList",
+        name: "SystemAdminList",
+        component: SystemAdminList
+      },
+      {
+        path: "SystemBackup",
+        name: "SystemBackup",
+        component: SystemBackup
+      },
+      {
+        path: "SystemExamBank",
+        name: "SystemExamBank",
+        component: SystemExamBank
       }
     ]
   }
