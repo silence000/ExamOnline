@@ -1,0 +1,18 @@
+@charset "UTF-8";
+@import "variables";
+@mixin content-center{
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+// 管理界面内容标题
+@mixin admin-content-title{
+  h3 {
+    margin: 0;
+    height: 55px;
+    line-height: 55px;
+    text-align: left;
+    font-size: $content-title-fontsize;
+    color: $title-fontcolor;
+  }
+}
