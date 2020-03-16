@@ -17,6 +17,8 @@ import SystemAdminList from "../components/admin/SystemSettings/SystemAdminList"
 import SystemBackup from "../components/admin/SystemSettings/SystemBackup";
 import SystemExamBank from "../components/admin/SystemSettings/SystemExamBank";
 
+import Login from "../components/user/LoginAndRegister/Login";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -137,6 +139,20 @@ const routes = [
         path: "SystemExamBank",
         name: "SystemExamBank",
         component: SystemExamBank
+      }
+    ]
+  },
+  {
+    // 用户登录
+    path: "/user/LoginAndRegister",
+    name: "LoginAndRegister",
+    component: () => import("../views/user/LoginAndRegister.vue"),
+    redirect: "/user/LoginAndRegister/Login",
+    children: [
+      {
+        path: "Login",
+        name: "Login",
+        component: Login
       }
     ]
   }
