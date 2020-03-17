@@ -69,6 +69,11 @@ export default {
           }
         })
         .catch(function(error) {
+          that.$message({
+            showClose: true,
+            message: "登录失败, 远程服务器出错! ",
+            type: "error"
+          });
           console.log(error);
         });
     },

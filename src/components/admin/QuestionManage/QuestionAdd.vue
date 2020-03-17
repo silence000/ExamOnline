@@ -10,12 +10,12 @@
     <el-col :span="24" class="content">
       <div class="input-box">
         <span class="small-title">试题类型：</span>
-        <el-select v-model="question_type" placeholder="请选择" value="">
+        <el-select v-model="question_type_data" placeholder="请选择" value="">
           <el-option
             v-for="item in question_type_options"
-            :key="item.question_type"
-            :label="item.label"
-            :value="item.question_type"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           >
           </el-option>
         </el-select>
@@ -23,7 +23,7 @@
       <div class="input-box">
         <span class="small-title">知识点：</span>
         <el-transfer
-          v-model="point_value"
+          v-model="point_select"
           :titles="point_title"
           :data="point_data"
           :button-texts="['删除', '添加']"
@@ -39,34 +39,34 @@
         >
         </el-input>
       </div>
-      <div class="input-box">选项</div>
-      <div class="input-box">
-        <span class="small-title">A：</span>
-        <el-input v-model="test_optionA" placeholder="请输入内容"></el-input>
-      </div>
-      <div class="input-box">
-        <span class="small-title">B：</span>
-        <el-input v-model="test_optionB" placeholder="请输入内容"></el-input>
-      </div>
-      <div class="input-box">
-        <span class="small-title">C：</span>
-        <el-input v-model="test_optionC" placeholder="请输入内容"></el-input>
-      </div>
-      <div class="input-box">
-        <span class="small-title">D：</span>
-        <el-input v-model="test_optionD" placeholder="请输入内容"></el-input>
+      <div v-if="display">
+        <div class="input-box">选项</div>
+        <div class="input-box">
+          <span class="small-title">A：</span>
+          <el-input v-model="test_optionA" placeholder="请输入内容"></el-input>
+        </div>
+        <div class="input-box">
+          <span class="small-title">B：</span>
+          <el-input v-model="test_optionB" placeholder="请输入内容"></el-input>
+        </div>
+        <div class="input-box">
+          <span class="small-title">C：</span>
+          <el-input v-model="test_optionC" placeholder="请输入内容"></el-input>
+        </div>
+        <div class="input-box">
+          <span class="small-title">D：</span>
+          <el-input v-model="test_optionD" placeholder="请输入内容"></el-input>
+        </div>
       </div>
       <div class="input-box">
         <span class="small-title">正确答案：</span>
-        <el-select v-model="answer_value" placeholder="请选择" value="">
-          <el-option
-            v-for="item in answer_options"
-            :key="item.answer_value"
-            :label="item.label"
-            :value="item.answer_value"
-          >
-          </el-option>
-        </el-select>
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="answers"
+        >
+        </el-input>
       </div>
       <div class="input-box">
         <span class="small-title">难度：</span>
@@ -93,7 +93,7 @@
           v-model="analysis"
         ></el-input>
       </div>
-      <el-button type="primary">保存</el-button>
+      <el-button type="primary" @click="submit">提交</el-button>
     </el-col>
   </el-row>
 </template>
@@ -101,35 +101,15 @@
 <script>
 export default {
   data() {
-    // 生成知识点内容
-    // eslint-disable-next-line no-unused-vars
-    const generateData = _ => {
-      const data = [];
-      for (let i = 1; i <= 15; i++) {
-        data.push({
-          key: i,
-          label: `备选项 ${i}`,
-          disabled: i % 4 === 0
-        });
-      }
-      return data;
-    };
     return {
+      // 题型切换显示
+      display: true,
       // 试题类型
-      question_type_options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        }
-      ],
-      question_type: "",
+      question_type_options: [],
+      question_type_data: "",
       // 知识点
-      point_data: generateData(),
-      point_value: [1, 4],
+      point_data: [],
+      point_select: [], // 已选知识点
       point_title: ["待选知识点", "已选知识点"],
       // 试题内容
       test_content: "",
@@ -138,32 +118,108 @@ export default {
       test_optionB: "",
       test_optionC: "",
       test_optionD: "",
-      // 正确答案
-      answer_options: [
-        {
-          value: "选项1",
-          label: "A"
-        },
-        {
-          value: "选项2",
-          label: "B"
-        },
-        {
-          value: "选项3",
-          label: "C"
-        },
-        {
-          value: "选项4",
-          label: "D"
-        }
-      ],
-      answer_value: "", // 正确答案
+      answers: "", // 正确答案
       difficulty: "", // 难度
       reference: "", // 来源
       examing_point: "", // 考点
       keyword: "", // 关键字
       analysis: "" // 题目解析
     };
+  },
+  mounted() {
+    this.init();
+  },
+  watch: {
+    question_type_data: {
+      handler(newVal) {
+        if (newVal + "" === "1") {
+          this.display = true;
+        }
+        if (newVal + "" === "2") {
+          this.display = false;
+        }
+      },
+      immediate: true //页面完成渲染后立即执行
+    }
+  },
+  methods: {
+    init() {
+      const that = this;
+      this.$axios
+        .get(
+          "http://localhost:8890/admin/QuestionManage/QuestionAdd/getQuestionType"
+        )
+        .then(function(response) {
+          that.question_type_options = response.data;
+        });
+      this.$axios
+        .get("http://localhost:8890/admin/PointManage/getAllPoint")
+        .then(function(response) {
+          const temp = [];
+          const datas = response.data;
+          for (let i = 0; i < response.data.length; i++) {
+            temp.push({
+              key: datas[i].point_id,
+              label: datas[i].point_name
+            });
+          }
+          that.point_data = temp;
+        });
+    },
+    submit() {
+      const that = this; // 保存this对象
+      const temp = {
+        question_type_id: this.question_type_data,
+        pointList: this.point_select,
+        desccription: this.test_content,
+        question_options: [
+          this.test_optionA,
+          this.test_optionB,
+          this.test_optionC,
+          this.test_optionD
+        ],
+        answer: this.answers,
+        difficulty: this.difficulty,
+        reference: this.reference,
+        examing_point: this.examing_point,
+        keyword: this.keyword,
+        analysis: this.analysis
+      };
+      console.log(temp);
+      this.$axios({
+        url:
+          "http://localhost:8890/admin/QuestionManage/QuestionAdd/addQuestion",
+        data: temp,
+        method: "post",
+        header: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(function(response) {
+          console.log(response.data);
+          if (response.data + "" === "1") {
+            that.$message({
+              showClose: true,
+              message: "提交成功! ",
+              type: "success"
+            });
+          } else {
+            that.$message({
+              showClose: true,
+              message: "提交失败, 请重试! ",
+              type: "error"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+          that.$message({
+            showClose: true,
+            message: "提交失败, 远程服务器出错! ",
+            type: "error"
+          });
+        });
+    }
   }
 };
 </script>

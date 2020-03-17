@@ -31,7 +31,7 @@
           <i class="fa fa-user"></i> 会员管理
         </el-menu-item>
         <el-menu-item index="5">
-          <i class="fa fa-cloud"></i> 知识点管理
+          <i class="fa fa-cloud"></i> 题库管理
         </el-menu-item>
         <el-menu-item index="6">
           <i class="fa fa-cogs"></i> 网站设置
