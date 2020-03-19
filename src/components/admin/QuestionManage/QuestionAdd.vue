@@ -172,7 +172,7 @@ export default {
         question_type_id: this.question_type_data,
         pointList: this.point_select,
         desccription: this.test_content,
-        question_options: [
+        options: [
           this.test_optionA,
           this.test_optionB,
           this.test_optionC,
@@ -185,7 +185,7 @@ export default {
         keyword: this.keyword,
         analysis: this.analysis
       };
-      console.log(temp);
+      console.log(temp); // 输出question对象
       this.$axios({
         url:
           "http://localhost:8890/admin/QuestionManage/QuestionAdd/addQuestion",

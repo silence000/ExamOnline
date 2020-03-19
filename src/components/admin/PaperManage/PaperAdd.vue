@@ -13,7 +13,7 @@
         <el-input v-model="paper_name" placeholder="请输入内容"></el-input>
       </div>
       <div class="select-box">
-        <span class="small-title">试题类型：</span>
+        <span class="small-title">组卷方式：</span>
         <el-select v-model="make_paper_type" placeholder="请选择" value="">
           <el-option
             v-for="item in make_paper_options"
@@ -37,6 +37,13 @@
         </el-select>
       </div>
       <div class="input-box">
+        <span class="small-title">难度系数：</span>
+        <el-input
+          v-model="paper_difficulty"
+          placeholder="请输入内容"
+        ></el-input>
+      </div>
+      <div class="input-box">
         <span class="small-title">及格分数：</span>
         <el-input v-model="pass_score" placeholder="请输入内容"></el-input>
       </div>
@@ -48,7 +55,7 @@
         <span class="small-title" style="float: left">题型分布：</span>
         <div class="small-container">
           <div class="small-content">
-            <span class="small-title-content">单选题 </span>
+            <span class="small-title-content">*单选题 </span>
             <el-input
               v-model="single_choice"
               class="el-input--small el-input-small"
@@ -104,15 +111,15 @@
             <span> 分</span>
           </div>
           <div class="small-content">
-            <span class="small-title-content">简答题 </span>
+            <span class="small-title-content">*简答题 </span>
             <el-input
-              v-model="single_choice"
+              v-model="essay_question"
               class="el-input--small el-input-small"
             ></el-input>
             <span> 道，</span>
             <span class="small-title-content">每道题 </span>
             <el-input
-              v-model="single_choice_point"
+              v-model="essay_question_point"
               class="el-input--small el-input-small"
             ></el-input>
             <span> 分</span>
@@ -151,7 +158,7 @@
         <span class="small-title">总分：</span>
         <el-input v-model="total_score" placeholder="请输入内容"></el-input>
       </div>
-      <el-button type="primary">下一步</el-button>
+      <el-button type="primary" @click="submit">下一步</el-button>
     </el-col>
   </el-row>
 </template>
@@ -161,6 +168,7 @@ export default {
   data() {
     return {
       paper_name: "", // 试卷名称
+      paper_difficulty: "", // 难度系数
       pass_score: "", // 及格分数
       total_time: "", // 时长(分钟)
       // 组卷方式
@@ -192,23 +200,59 @@ export default {
       ],
       paper_type_type: "",
       // 题型
-      single_choice: "",
+      single_choice: "", // 单选个数
       multiple_choice: "",
       judge: "",
       gap_filling: "",
       short_answer: "",
-      essay_question: "",
+      essay_question: "", // 主观题个数
       analysis_problem: "",
-      single_choice_point: "",
+      single_choice_point: "", // 单选分数
       multiple_choice_point: "",
       judge_point: "",
       gap_filling_point: "",
       short_answer_point: "",
-      essay_question_point: "",
+      essay_question_point: "", // 主观题分数
       analysis_problem_point: "",
       // 总分
       total_score: ""
     };
+  },
+  methods: {
+    submit() {
+      // const that = this; // 保存this对象
+      const temp = {
+        paperName: this.paper_name,
+        questionTypeNum: {
+          1: this.single_choice,
+          2: this.essay_question
+        },
+        questionTypePoint: {
+          1: this.single_choice_point,
+          2: this.essay_question_point
+        },
+        difficulty: this.paper_difficulty,
+        passPoint: this.pass_score,
+        time: this.time,
+        paperPoint: this.total_score,
+        paperType: this.paper_type_type
+      };
+      console.log(temp);
+      this.$axios({
+        url: "http://localhost:8890/admin/PaperManage/PaperAdd/addPaper",
+        data: temp,
+        method: "post",
+        header: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(function(response) {
+          console.log(response.data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   }
 };
 </script>
